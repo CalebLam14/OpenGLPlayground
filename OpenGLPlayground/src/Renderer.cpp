@@ -1,5 +1,4 @@
 #include "Renderer.h"
-#include <GL/glew.h>
 
 void GLClearError()
 {

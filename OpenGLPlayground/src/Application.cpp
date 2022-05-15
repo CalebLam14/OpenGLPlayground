@@ -12,6 +12,10 @@
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "Shader.h"
+#include "Texture.h"
+
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 int main(void)
 {
@@ -22,7 +26,7 @@ int main(void)
         return -1;
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 640, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(1600, 1200, "Hello World", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -41,10 +45,10 @@ int main(void)
 
     {
         float points[] = {
-            -0.5f, -0.5f,
-            0.5f, -0.5f,
-            0.5f, 0.5f,
-            -0.5f, 0.5f,
+            -0.5f, -0.5f, 0.0f, 0.0f,
+            0.5f, -0.5f, 1.0f, 0.0f,
+            0.5f, 0.5f, 1.0f, 1.0f,
+            -0.5f, 0.5f, 0.0f, 1.0f,
         };
 
         unsigned int indices[] = {
@@ -52,24 +56,36 @@ int main(void)
             2, 3, 0
         };
 
+        GLCall(glEnable(GL_BLEND));
+        GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+
         VertexArray va;
-        VertexBuffer vb(points, 4 * 2 * sizeof(float));
+        VertexBuffer vb(points, 4 * 4 * sizeof(float));
         VertexBufferLayout layout;
+        layout.Push<float>(2);
         layout.Push<float>(2);
         va.AddBuffer(vb, layout);
 
         IndexBuffer ib(indices, 6);
 
-        Shader s("res/shaders/basic.shader");
-        s.Bind();
+        glm::mat4 proj = glm::ortho(-1.0f, 1.0f, -0.75f, 0.75f, -1.0f, 1.0f);
+
+        Shader shader("res/shaders/basic.shader");
+        shader.Bind();
 
         /* Provide u_Color uniform */
-        s.SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
+        shader.SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
+        shader.SetUniformMat4f("u_MVP", proj);
+
+        /* Provide u_Texture uniform */
+        Texture texture("res/textures/Logo2020.png");
+        texture.Bind();
+        shader.SetUniform1i("u_Texture", 0);
 
         va.Unbind();
         vb.Unbind();
         ib.Unbind();
-        s.Unbind();
+        shader.Unbind();
 
         // red
         float r = 0.0f;
@@ -83,8 +99,8 @@ int main(void)
             /* Render here */
             glClear(GL_COLOR_BUFFER_BIT);
 
-            s.Bind();
-            s.SetUniform4f("u_Color", r, 0.3f, 0.8f, 1.0f);
+            shader.Bind();
+            shader.SetUniform4f("u_Color", r, 0.3f, 0.8f, 1.0f);
 
             va.Bind();
             ib.Bind();
