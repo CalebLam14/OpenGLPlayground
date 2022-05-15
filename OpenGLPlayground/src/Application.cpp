@@ -26,7 +26,7 @@ int main(void)
         return -1;
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(1600, 1200, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(1920, 1080, "Hello World", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -45,10 +45,10 @@ int main(void)
 
     {
         float points[] = {
-            -0.5f, -0.5f, 0.0f, 0.0f,
-            0.5f, -0.5f, 1.0f, 0.0f,
-            0.5f, 0.5f, 1.0f, 1.0f,
-            -0.5f, 0.5f, 0.0f, 1.0f,
+            100.0f, 100.0f, 0.0f, 0.0f,
+            200.0f, 100.0f, 1.0f, 0.0f,
+            200.0f, 200.0f, 1.0f, 1.0f,
+            100.0f, 200.0f, 0.0f, 1.0f,
         };
 
         unsigned int indices[] = {
@@ -68,14 +68,18 @@ int main(void)
 
         IndexBuffer ib(indices, 6);
 
-        glm::mat4 proj = glm::ortho(-1.0f, 1.0f, -0.75f, 0.75f, -1.0f, 1.0f);
+        glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
+        glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-100, 0, 0));
+        glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(200, 200, 0));
+
+        glm::mat4 mvp = proj * view * model;
 
         Shader shader("res/shaders/basic.shader");
         shader.Bind();
 
         /* Provide u_Color uniform */
         shader.SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
-        shader.SetUniformMat4f("u_MVP", proj);
+        shader.SetUniformMat4f("u_MVP", mvp);
 
         /* Provide u_Texture uniform */
         Texture texture("res/textures/Logo2020.png");
