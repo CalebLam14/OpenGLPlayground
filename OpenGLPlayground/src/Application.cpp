@@ -65,7 +65,7 @@ int main(void)
         const char* glslVersion = "#version 330 core";
         ImGui_ImplGlfw_InitForOpenGL(window, true);
         ImGui_ImplOpenGL3_Init(glslVersion);
-
+        
         test::TestClearColor test;
 
         /* Loop until the user closes the window */
@@ -83,6 +83,7 @@ int main(void)
 
             {
                 ImGui::Begin("Tests");
+                ImGui::SetWindowFontScale(1.5f);
                 test.OnImGuiRender();
                 ImGui::End();
             }
