@@ -66,28 +66,41 @@ int main(void)
         ImGui_ImplGlfw_InitForOpenGL(window, true);
         ImGui_ImplOpenGL3_Init(glslVersion);
         
-        test::TestClearColor test;
         /* Setup ImGui fonts */
         ImGuiIO& io = ImGui::GetIO();
         io.Fonts->AddFontFromFileTTF("res/fonts/OpenSans.ttf", 18.0f);
+
+        /* Tests */
+        test::Test* currentTest = nullptr;
+        test::TestMenu* testMenu = new test::TestMenu(currentTest);
+        currentTest = testMenu;
+
+        /* Register tests here! */
+        testMenu->RegisterTest<test::TestClearColor>("Clear Color");
 
         /* Loop until the user closes the window */
         while (!glfwWindowShouldClose(window))
         {
             /* Render here */
+            GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
             renderer.Clear();
-
-            test.OnUpdate(0.0f);
-            test.OnRender();
 
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
 
+            if (currentTest)
             {
-                ImGui::Begin("Tests");
+                currentTest->OnUpdate(0.0f);
+                currentTest->OnRender();
+                ImGui::Begin("OpenGL Playground Tests");
                 ImGui::SetWindowFontScale(1.5f);
-                test.OnImGuiRender();
+                if (currentTest != testMenu && ImGui::ArrowButton("##back", ImGuiDir_Left))
+                {
+                    delete currentTest;
+                    currentTest = testMenu;
+                }
+                currentTest->OnImGuiRender();
                 ImGui::End();
             }
             
@@ -100,6 +113,12 @@ int main(void)
             /* Poll for and process events */
             glfwPollEvents();
         }
+
+        if (currentTest != testMenu)
+        {
+            delete testMenu;
+        }
+        delete currentTest;
     }
 
     // Cleanup
