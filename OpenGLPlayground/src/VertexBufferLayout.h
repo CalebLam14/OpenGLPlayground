@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <GL/glew.h>
-#include <type_traits>
+#include <string>
 #include "Renderer.h"
 
 struct VertexBufferElement
@@ -34,36 +34,18 @@ public:
 	VertexBufferLayout()
 		: m_Stride(0) {}
 
-	template<typename T>
-	void Push(unsigned int count)
+	template<typename T> void Push(unsigned int count)
 	{
-		static_assert(true);
+		std::string message = std::string("Attempting to push ") + typeid(T).name() + std::string(" which is unsupported.");
+		throw std::invalid_argument(message);
 	}
+
+	template<> void Push<float>(unsigned int count);
+	template<> void Push<unsigned int>(unsigned int count);
+	template<> void Push<unsigned char>(unsigned int count);
 
 	inline const std::vector<VertexBufferElement> GetElements() const { return m_Elements; }
 	inline unsigned int GetStride() const { return m_Stride; }
 };
 
-template<> inline
-void VertexBufferLayout::Push<float>(unsigned int count)
-{
-	VertexBufferElement element = { GL_FLOAT, count, false };
-	m_Elements.push_back(element);
-	m_Stride += count * VertexBufferElement::GetSizeOfType(GL_FLOAT);
-}
 
-template<> inline
-void VertexBufferLayout::Push<unsigned int>(unsigned int count)
-{
-	VertexBufferElement element = { GL_UNSIGNED_INT, count, false };
-	m_Elements.push_back(element);
-	m_Stride += count * VertexBufferElement::GetSizeOfType(GL_UNSIGNED_INT);
-}
-
-template<> inline
-void VertexBufferLayout::Push<unsigned char>(unsigned int count)
-{
-	VertexBufferElement element = { GL_UNSIGNED_BYTE, count, true };
-	m_Elements.push_back(element);
-	m_Stride += count * VertexBufferElement::GetSizeOfType(GL_UNSIGNED_BYTE);
-}
