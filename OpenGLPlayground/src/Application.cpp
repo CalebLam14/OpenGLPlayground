@@ -67,6 +67,9 @@ int main(void)
         ImGui_ImplOpenGL3_Init(glslVersion);
         
         test::TestClearColor test;
+        /* Setup ImGui fonts */
+        ImGuiIO& io = ImGui::GetIO();
+        io.Fonts->AddFontFromFileTTF("res/fonts/OpenSans.ttf", 18.0f);
 
         /* Loop until the user closes the window */
         while (!glfwWindowShouldClose(window))
