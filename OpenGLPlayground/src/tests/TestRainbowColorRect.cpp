@@ -75,7 +75,7 @@ namespace test {
 
 	void TestRainbowColorRect::OnImGuiRender()
 	{
-        ImGui::SliderFloat3("Translation", &m_Translation.x, 0.0f, 960.0f);
+        ImGui::SliderFloat2("Translation", &m_Translation.x, 0.0f, 960.0f);
         ImGui::InputFloat("Color Cycle Period (s)", &m_Period);
         ImGui::Text("NOTE: Setting Color Cycle Period to 0.0s stops the rainbow animation.");
         ImGui::Text("Hue (deg.): %d", (unsigned int)m_Hue);
