@@ -48,7 +48,9 @@ namespace test {
 
 	void TestRainbowColorRect::OnUpdate(float deltaTime)
 	{
-        m_Hue += deltaTime / m_Period * 360.0f;
+        m_Period = fmax(m_Period, 0.0f);
+        if (m_Period > 0.0f)
+            m_Hue += deltaTime / m_Period * 360.0f;
         m_Hue = fmod(m_Hue, 360.0f);
 	}
 
@@ -73,10 +75,11 @@ namespace test {
 
 	void TestRainbowColorRect::OnImGuiRender()
 	{
-        ImGui::SliderFloat3("Translation A", &m_Translation.x, 0.0f, 960.0f);
-        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-
+        ImGui::SliderFloat3("Translation", &m_Translation.x, 0.0f, 960.0f);
+        ImGui::InputFloat("Color Cycle Period (s)", &m_Period);
+        ImGui::Text("NOTE: Setting Color Cycle Period to 0.0s stops the rainbow animation.");
         ImGui::Text("Hue (deg.): %d", (unsigned int)m_Hue);
+        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	}
 
     void TestRainbowColorRect::HSVAToRGBA(float h, float s, float v, float a, float rgbaArray[4])
