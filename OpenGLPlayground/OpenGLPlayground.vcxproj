@@ -157,7 +157,9 @@
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\tests\Test.cpp" />
     <ClCompile Include="src\tests\TestClearColor.cpp" />
-    <ClCompile Include="src\tests\TestSimpleRect.cpp" />
+    <ClCompile Include="src\tests\TestRainbowColorRect.cpp" />
+    <ClCompile Include="src\tests\TestSolidColorRect.cpp" />
+    <ClCompile Include="src\tests\TestTexture2D.cpp" />
     <ClCompile Include="src\vendor\glm\detail\glm.cpp" />
     <ClCompile Include="src\vendor\imgui\imgui.cpp" />
     <ClCompile Include="src\vendor\imgui\imgui_demo.cpp" />
@@ -173,7 +175,8 @@
     <ClCompile Include="src\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\shaders\basic.shader" />
+    <None Include="res\shaders\basic_color.shader" />
+    <None Include="res\shaders\basic_texture.shader" />
     <None Include="src\vendor\glm\detail\func_common.inl" />
     <None Include="src\vendor\glm\detail\func_common_simd.inl" />
     <None Include="src\vendor\glm\detail\func_exponential.inl" />
@@ -317,7 +320,9 @@
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\tests\Test.h" />
     <ClInclude Include="src\tests\TestClearColor.h" />
-    <ClInclude Include="src\tests\TestSimpleRect.h" />
+    <ClInclude Include="src\tests\TestRainbowColorRect.h" />
+    <ClInclude Include="src\tests\TestSolidColorRect.h" />
+    <ClInclude Include="src\tests\TestTexture2D.h" />
     <ClInclude Include="src\vendor\glm\common.hpp" />
     <ClInclude Include="src\vendor\glm\detail\compute_common.hpp" />
     <ClInclude Include="src\vendor\glm\detail\compute_vector_relational.hpp" />

@@ -22,6 +22,9 @@
 #include <imgui/imgui_impl_opengl3.h>
 
 #include "tests/TestClearColor.h"
+#include "tests/TestSolidColorRect.h"
+#include "tests/TestRainbowColorRect.h"
+#include "tests/TestTexture2D.h"
 
 int main(void)
 {
@@ -49,6 +52,8 @@ int main(void)
 
     std::cout << glGetString(GL_VERSION) << std::endl;
 
+    float lastFrameTime = (float)glfwGetTime();
+
     {
         GLCall(glEnable(GL_BLEND));
         GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
@@ -73,14 +78,23 @@ int main(void)
         /* Tests */
         test::Test* currentTest = nullptr;
         test::TestMenu* testMenu = new test::TestMenu(currentTest);
+
         currentTest = testMenu;
 
         /* Register tests here! */
         testMenu->RegisterTest<test::TestClearColor>("Clear Color");
+        testMenu->RegisterTest<test::TestSolidColorRect>("Solid Color Rectangle");
+        testMenu->RegisterTest<test::TestRainbowColorRect>("Rainbow Rectangle");
+        testMenu->RegisterTest<test::TestTexture2D>("2D Texture");
 
         /* Loop until the user closes the window */
         while (!glfwWindowShouldClose(window))
         {
+            /* Frame time */
+            float time = (float)glfwGetTime();
+            float timestep = time - lastFrameTime;
+            lastFrameTime = time;
+
             /* Render here */
             GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
             renderer.Clear();
@@ -91,7 +105,7 @@ int main(void)
 
             if (currentTest)
             {
-                currentTest->OnUpdate(0.0f);
+                currentTest->OnUpdate(timestep);
                 currentTest->OnRender();
                 ImGui::Begin("OpenGL Playground Tests");
                 ImGui::SetWindowFontScale(1.5f);
@@ -100,6 +114,7 @@ int main(void)
                     delete currentTest;
                     currentTest = testMenu;
                 }
+                
                 currentTest->OnImGuiRender();
                 ImGui::End();
             }
