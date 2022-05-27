@@ -77,6 +77,7 @@ namespace test {
 	{
         ImGui::SliderFloat2("Translation", &m_Translation.x, 0.0f, 960.0f);
         ImGui::InputFloat("Color Cycle Period (s)", &m_Period);
+        ImGui::DragFloat("Color Cycle Period (s)", &m_Period, 0.005f, 0.0f, FLT_MAX, "%.3f", ImGuiSliderFlags_AlwaysClamp);
         ImGui::Text("NOTE: Setting Color Cycle Period to 0.0s stops the rainbow animation.");
         ImGui::Text("Hue (deg.): %d", (unsigned int)m_Hue);
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
