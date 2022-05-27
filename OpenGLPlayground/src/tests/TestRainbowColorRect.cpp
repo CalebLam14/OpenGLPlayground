@@ -9,7 +9,8 @@ namespace test {
     TestRainbowColorRect::TestRainbowColorRect()
         : m_Proj(glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f)),
         m_View(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0))),
-        m_Translation(480, 270, 0), m_Hue(0.0f), m_Period(2.0f)
+        m_Translation(480, 270, 0), m_Hue(0.0f), m_Saturation(1.0f), m_Lightness(1.0f), m_Alpha(1.0f),
+        m_Period(2.0f)
 	{
         float points[] = {
             -50.0f, -50.0f, 0.0f, 0.0f,
@@ -65,7 +66,7 @@ namespace test {
             glm::mat4 model = glm::translate(glm::mat4(1.0f), m_Translation);
             glm::mat4 mvp = m_Proj * m_View * model;
             float color[4];
-            HSVAToRGBA(m_Hue, 1.0f, 1.0f, 1.0f, color);
+            HSVAToRGBA(m_Hue, m_Saturation, m_Lightness, m_Alpha, color);
             m_Shader->Bind();
             m_Shader->SetUniform4f("u_Color", color[0], color[1], color[2], color[3]);
             m_Shader->SetUniformMat4f("u_MVP", mvp);
@@ -75,9 +76,11 @@ namespace test {
 
 	void TestRainbowColorRect::OnImGuiRender()
 	{
-        ImGui::SliderFloat2("Translation", &m_Translation.x, 0.0f, 960.0f);
-        ImGui::InputFloat("Color Cycle Period (s)", &m_Period);
+        ImGui::SliderFloat2("Translation", &m_Translation.x, 0.0f, 960.0f, "%.3f", ImGuiSliderFlags_AlwaysClamp);
         ImGui::DragFloat("Color Cycle Period (s)", &m_Period, 0.005f, 0.0f, FLT_MAX, "%.3f", ImGuiSliderFlags_AlwaysClamp);
+        ImGui::SliderFloat("Saturation", &m_Saturation, 0.0f, 1.0f, "%.3f", ImGuiSliderFlags_AlwaysClamp);
+        ImGui::SliderFloat("Lightness", &m_Lightness, 0.0f, 1.0f, "%.3f", ImGuiSliderFlags_AlwaysClamp);
+        ImGui::SliderFloat("Alpha", &m_Alpha, 0.0f, 1.0f, "%.3f", ImGuiSliderFlags_AlwaysClamp);
         ImGui::Text("NOTE: Setting Color Cycle Period to 0.0s stops the rainbow animation.");
         ImGui::Text("Hue (deg.): %d", (unsigned int)m_Hue);
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);

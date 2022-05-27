@@ -24,6 +24,9 @@ namespace test {
 		void HSVAToRGBA(float h, float s, float v, float a, float rgbaArray[4]);
 		glm::vec3 m_Translation;
 		float m_Hue;
+		float m_Saturation;
+		float m_Lightness;
+		float m_Alpha;
 		float m_Period;
 		std::unique_ptr<VertexArray> m_VAO;
 		std::unique_ptr<VertexBuffer> m_VertexBuffer;
