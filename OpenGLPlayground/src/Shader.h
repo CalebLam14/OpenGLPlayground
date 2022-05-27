@@ -4,6 +4,7 @@
 #include <unordered_map>
 
 #include "glm/glm.hpp"
+#include <GL/glew.h>
 
 struct ShaderProgramSource
 {
@@ -18,7 +19,7 @@ private:
 	unsigned int m_RendererID;
 
 	// caching for uniforms
-	std::unordered_map<std::string, int> m_UniformLocationCache;
+	mutable std::unordered_map<std::string, GLint> m_UniformLocationCache;
 public:
 	Shader(const std::string& filepath);
 	~Shader();
@@ -36,6 +37,6 @@ private:
 	ShaderProgramSource ParseShader(const std::string& filepath);
 	unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader);
 
-	int GetUniformLocation(const std::string& name);
+	int GetUniformLocation(const std::string& name) const;
 };
 

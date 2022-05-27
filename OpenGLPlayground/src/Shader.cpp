@@ -2,7 +2,6 @@
 
 #include <fstream>
 #include <sstream>
-#include <GL/glew.h>
 #include <iostream>
 #include "Renderer.h"
 
@@ -112,28 +111,29 @@ void Shader::Unbind() const
 
 void Shader::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
 {
-    int location = GetUniformLocation(name);
+    GLint location = GetUniformLocation(name);
     GLCall(glUniform4f(location, v0, v1, v2, v3));
 }
 
 void Shader::SetUniformMat4f(const std::string& name, const glm::mat4& matrix)
 {
-    int location = GetUniformLocation(name);
+    GLint location = GetUniformLocation(name);
     GLCall(glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]));
 }
 
 void Shader::SetUniform1i(const std::string& name, int value)
 {
-    int location = GetUniformLocation(name);
+    GLint location = GetUniformLocation(name);
     GLCall(glUniform1i(location, value));
 }
 
-int Shader::GetUniformLocation(const std::string& name)
+GLint Shader::GetUniformLocation(const std::string& name) const
 {
-    if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
-        return m_UniformLocationCache[name];
+    auto locationLookup = m_UniformLocationCache.find(name);
+    if (locationLookup != m_UniformLocationCache.end())
+        return locationLookup->second;
 
-    GLCall(int location = glGetUniformLocation(m_RendererID, name.c_str()));
+    GLCall(GLint location = glGetUniformLocation(m_RendererID, name.c_str()));
     if (location == -1)
         std::cout << "Warning: uniform " << name << " doesn\'t exist!" << std::endl;
     
