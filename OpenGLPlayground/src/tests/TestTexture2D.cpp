@@ -36,9 +36,6 @@ namespace test {
         m_Shader = std::make_unique<Shader>("res/shaders/basic_texture.shader");
         m_Shader->Bind();
 
-        /* Provide u_Color uniform */
-        // m_Shader->SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
-
         /* Provide u_Texture uniform */
         m_Texture = std::make_unique<Texture>("res/textures/Cube.png");
         m_Shader->SetUniform1i("u_Texture", 0);
@@ -78,6 +75,6 @@ namespace test {
 	{
         ImGui::SliderFloat2("Translation A", &m_TranslationA.x, 0.0f, 960.0f, "%.3f", ImGuiSliderFlags_AlwaysClamp);
         ImGui::SliderFloat2("Translation B", &m_TranslationB.x, 0.0f, 960.0f, "%.3f", ImGuiSliderFlags_AlwaysClamp);
-        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+        ImGui::TextWrapped("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	}
 }

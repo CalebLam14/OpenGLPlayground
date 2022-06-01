@@ -81,9 +81,9 @@ namespace test {
         ImGui::SliderFloat("Saturation", &m_Saturation, 0.0f, 1.0f, "%.3f", ImGuiSliderFlags_AlwaysClamp);
         ImGui::SliderFloat("Lightness", &m_Lightness, 0.0f, 1.0f, "%.3f", ImGuiSliderFlags_AlwaysClamp);
         ImGui::SliderFloat("Alpha", &m_Alpha, 0.0f, 1.0f, "%.3f", ImGuiSliderFlags_AlwaysClamp);
-        ImGui::Text("NOTE: Setting Color Cycle Period to 0.0s stops the rainbow animation.");
-        ImGui::Text("Hue (deg.): %d", (unsigned int)m_Hue);
-        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+        ImGui::TextWrapped("NOTE: Setting Color Cycle Period to 0.0s stops the rainbow animation.");
+        ImGui::TextWrapped("Hue (deg.): %d", (unsigned int)m_Hue);
+        ImGui::TextWrapped("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	}
 
     void TestRainbowColorRect::HSVAToRGBA(float h, float s, float v, float a, float rgbaArray[4])
