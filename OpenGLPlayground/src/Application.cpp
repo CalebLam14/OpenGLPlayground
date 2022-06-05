@@ -73,7 +73,7 @@ int main(void)
         
         /* Setup ImGui fonts */
         ImGuiIO& io = ImGui::GetIO();
-        io.Fonts->AddFontFromFileTTF("res/fonts/OpenSans.ttf", 18.0f);
+        io.Fonts->AddFontFromFileTTF("res/fonts/OpenSans.ttf", 36.0f);
 
         /* Tests */
         test::Test* currentTest = nullptr;
@@ -108,7 +108,6 @@ int main(void)
                 currentTest->OnUpdate(timestep);
                 currentTest->OnRender();
                 ImGui::Begin("OpenGL Playground Tests");
-                ImGui::SetWindowFontScale(1.5f);
                 if (currentTest != testMenu && ImGui::ArrowButton("##back", ImGuiDir_Left))
                 {
                     delete currentTest;
