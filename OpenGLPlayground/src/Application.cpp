@@ -26,8 +26,15 @@
 #include "tests/TestRainbowColorRect.h"
 #include "tests/TestTexture2D.h"
 
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    glViewport(0, 0, width, height);
+}
+
 int main(void)
 {
+    int width = 1280;
+    int height = 720;
     GLFWwindow* window;
 
     /* Initialize the library */
@@ -35,12 +42,13 @@ int main(void)
         return -1;
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(1280, 720, "OpenGL Playground", NULL, NULL);
+    window = glfwCreateWindow(width, height, "OpenGL Playground", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
         return -1;
     }
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     glfwSwapInterval(1);
 
@@ -90,6 +98,9 @@ int main(void)
         /* Loop until the user closes the window */
         while (!glfwWindowShouldClose(window))
         {
+            /* Window resize handling */
+            glfwGetWindowSize(window, &width, &height);
+
             /* Frame time */
             float time = (float)glfwGetTime();
             float timestep = time - lastFrameTime;
